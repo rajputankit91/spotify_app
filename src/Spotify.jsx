@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
-import Body from "./body";
+import Body from "./Body.jsx";
 import axios from "axios";
 import { reducerCases } from "./Constants";
 import { useStateProvider } from "./StateProvider";
