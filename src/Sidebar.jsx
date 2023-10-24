@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { MdHomeFilled, MdSearch } from "react-icons/md";
 import { IoLibrary } from "react-icons/io5";
 import Playlists from "./Playlists";
+import { BrowserRouter as Router,Routes,Route } from "react-router-dom";
 
 export default function Sidebar() {
   return (
@@ -17,7 +18,8 @@ export default function Sidebar() {
         <ul>
           <li>
             <MdHomeFilled />
-            <span>Home</span>
+            <span> Home</span>
+            {/* <Link to="/">Home</Link> */}
           </li>
           <li>
             <MdSearch />

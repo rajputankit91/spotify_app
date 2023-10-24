@@ -6,8 +6,9 @@ import { useStateProvider } from "./StateProvider";
 import axios from "axios";
 import { reducerCases } from "./Constants";
 
-export default function Body(){
+export default function Body({headerBackground}){
   const [{ token,selectedPlaylistId,selectedPlaylist }, dispatch] =useStateProvider();
+  console.log(selectedPlaylistId);
 
   useEffect(() => {
     const getInitialPlaylist = async () => {
@@ -20,6 +21,7 @@ export default function Body(){
           },
         }
       );
+      console.log("=======",response);
       const selectedPlaylist = {
         id: response.data.id,
         name: response.data.name,
@@ -43,10 +45,16 @@ export default function Body(){
     getInitialPlaylist();
   }, [token, dispatch, selectedPlaylistId]);
 
+  const msToMinutesAndSeconds = (ms) => {
+    var minutes = Math.floor(ms / 60000);
+    var seconds = ((ms % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+  };
+
   
 
   return (
-    <Container>
+    <Container headerBackground={headerBackground}>
       {selectedPlaylist && (
         <>
           <div className="playlist">
@@ -83,8 +91,15 @@ export default function Body(){
               {selectedPlaylist.tracks.map(({
                 id,name,artists,image,duration,album,context_uri,track_number
               },index) =>{
+                // console.log(id);
+
+                const changeCurrentTrack = (currentTrackId) =>{
+                  // console.log('clicked',currentTrackId),
+                  dispatch({type:reducerCases.SET_CURRENTTRACK_ID,currentTrackId})
+                }
+
                 return (
-                  <div className="row" key={id}>
+                  <div className="row" key={id} onClick={() =>changeCurrentTrack(id)}>
                     <div className="col">
                       <span>{index + 1}</span>
                     </div>
@@ -98,8 +113,13 @@ export default function Body(){
                         <span>{artists}</span>
                       </div>
                     </div>
+                    
                     <div className="col">
-                      <span>{duration}</span>
+                      <span>{album}</span>
+                    </div>
+
+                    <div className="col">
+                    <span>{msToMinutesAndSeconds(duration)}</span>
                     </div>
                   </div>
                 )

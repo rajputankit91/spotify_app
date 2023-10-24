@@ -4,16 +4,14 @@ import { FaSearch } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { useStateProvider } from "./StateProvider";
 
-export default function Navbar() {
+export default function Navbar({ navBackground }) {
   const [{ userInfo }] = useStateProvider();
-  console.log({userInfo});
   return (
-    <Container>
+    <Container navBackground={navBackground}>
       <div className="search__bar">
         <FaSearch />
         <input type="text" placeholder="Artists, songs, or podcasts" />
       </div>
-
       <div className="avatar">
         <a href={userInfo?.userUrl}>
           <CgProfile />
@@ -21,18 +19,8 @@ export default function Navbar() {
         </a>
       </div>
     </Container>
-  )  
+  );
 }
-
-
-
-// // import React from "react";
-// // export default function Navbar({ navbackground }) {
-// //   return (
-// //     <Container navBackground={navbackground}>
-// //     </Container>
-// //   );
-// // }
 
 const Container = styled.div`
   display: flex;

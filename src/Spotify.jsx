@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useRef,useState } from "react";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
@@ -6,10 +6,23 @@ import Body from "./Body.jsx";
 import axios from "axios";
 import { reducerCases } from "./Constants";
 import { useStateProvider } from "./StateProvider";
+import Footer from "./Footer";
 
 export default function Spotify(){
   const [{ token }, dispatch] = useStateProvider();
+  const [navBackground, setNavBackground] = useState(false);
+  const [headerBackground, setHeaderBackground] = useState(false);
+  const bodyRef = useRef();
+  const bodyScrolled = () => {
+    bodyRef.current.scrollTop >= 30
+      ? setNavBackground(true)
+      : setNavBackground(false);
+    bodyRef.current.scrollTop >= 268
+      ? setHeaderBackground(true)
+      : setHeaderBackground(false);
+  }; 
 
+  
   useEffect(() =>{
     const getUserInfo = async () => {
       const { data } = await axios.get("https://api.spotify.com/v1/me", {
@@ -33,15 +46,16 @@ export default function Spotify(){
     <Container>
       <div className="spotify__body">
         <Sidebar />
-        <div className="body">
-          <Navbar />
+        <div className="body" ref={bodyRef} onScroll={bodyScrolled}>
+          <Navbar navBackground={navBackground}/>
           <div className="body_contents">
-            <Body />
+            <Body headerBackground={headerBackground}/>
           </div>
         </div>
       </div>
 
       <div className="spotify_footer">
+        <Footer />
       </div>
     </Container>
   )
@@ -60,7 +74,7 @@ const Container = styled.div`
     height: 100%;
     width: 100%;
     background: linear-gradient(transparent, rgba(0, 0, 0, 1));
-    background-color: rgb(32, 87, 100);
+    background-color: rgb(93, 109, 120);
     .body {
       height: 100%;
       width: 100%;
